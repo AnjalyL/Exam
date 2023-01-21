@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block metadescription %}
+    {% if category %}
+        {{category.description|truncatewords:155 }}
+    {% else %}
+        Welcome to ABC Bank site
+    {% endif %}
+{% endblock %}
+
+{% block title %}
+    {% if category %}
+        {{category.name}} - ABC store
+    {% else %}
+        See our new collections - ABC store
+    {% endif %}
+{% endblock %}
+
+
+{% block content %}
+    {% if category %}
+        <div>
+
+            <div class = "row my_row_class">
+                <div class = "mx-auto">
+                <p><a href = "{% url 'ecommerceapp:allProdCat' %}">Our Product Collections</a></p>
+
+            </div>
+                </div>
+        </div>
+    {% endif %}
+
+<div class="mx_auto">
+    {% if category %}
+        <img class = "my_image" src="{{category.image.url}}" alt="{{category.name}}" width="1000px" height="400px">
+</div>
+    <br>
+<div>
+        <h1 class = "text-center my_title"> {{category.name}}</h1>
+        <p class=" text-justify">{{category.description}}</p>
+</div>
+    {% else %}
+    <div>
+        <img class ="my_image my_image_padding" src =" {% static 'img/banner.png' %}" alt = "our products" width="1200px" height="500px">
+    </div>
+        <br>
+    <div>
+        <h1 class = "text-center my_title"> Our products collections</h1>
+        <p class =  "text-justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer volutpat, metus eu condimentum euismod, massa erat eleifend nulla, ut aliquam lorem velit nec tellus. Vestibulum a rutrum quam. Ut a ipsum convallis, condimentum mauris in, congue nibh. Sed bibendum nisl metus, id imperdiet risus lobortis eget. Proin ullamcorper, urna at eleifend placerat, nulla ipsum fringilla nisl, eu pellentesque nibh neque et leo. Curabitur at felis nisl. Nulla placerat lectus id porta congue. Sed gravida, nunc et iaculis maximus, arcu lacus sollicitudin dui, quis semper erat nisi eget neque. Donec ut hendrerit nulla. Ut in erat sodales, tempus magna ac, posuere urna. Duis imperdiet dolor nec felis egestas ultricies. Morbi placerat eget tortor id facilisis.</p>
+
+    </div>
+    {% endif %}
+
+<div class = "container">
+    <div class = "row mx_auto">
+        {% for product in products.object_list %}
+        <div class = "my_bottom_margin col-9 col-sm-12 col-md-4  col-lg-4">
+            <div class = "card text-center" style = "min-width:18rem;">
+            <a href = "{{product.get_url}}"><img class = "card-img-top my_image" src = "{{product.image.url}}" alt = "{{product.name}}"></a>
+                <div class = "card-body">
+                    <h4>{{product.name}}</h4>
+                    <p>{{product.price}}</p>
+                </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+    <div class = "mx-auto">
+        {% if products.paginator.num_pages > 1 %}
+
+
+       <hr>
+        <div class  = "text-center">
+            {% for pg in products.paginator.page_range %}
+            <a href = "?page={{pg}}" class="btn btn-light btn-sm {% if products.number == pg %} active {%endif %}">{{pg}}</a>
+        {% endfor %}
+
+        </div>
+         {% endif %}
+    </div>
+
+    <br>
+
+</div>
+
+{% endblock %}
+
